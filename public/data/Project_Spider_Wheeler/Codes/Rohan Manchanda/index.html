@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head><title>ESP32 Test GUI</title></head>
+<body>
+  <h2>ESP32 Bi-Directional Chat</h2>
+  <input id="msg" placeholder="Type command..." />
+  <button onclick="send()">Send to ESP</button>
+  <pre id="log"></pre>
+
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script>
+    const socket = io("http://localhost:3000"); // replace with your server
+
+    socket.on("fromESP", msg => {
+      document.getElementById("log").textContent += "ESP: " + msg + "\n";
+    });
+
+    function send() {
+      const txt = document.getElementById("msg").value;
+      socket.emit("toESP", txt);
+      document.getElementById("log").textContent += "You: " + txt + "\n";
+    }
+  </script>
+</body>
+</html>
