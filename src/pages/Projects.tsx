@@ -1,5 +1,6 @@
 import { projects, spindle } from '../data'
-import { Gallery, Media, PageCta, SectionHead } from '../components/ui'
+import { ArrowUpRight } from '../components/Icons'
+import { ExternalLinks, Gallery, Media, PageCta, SectionHead } from '../components/ui'
 
 function Spindle() {
   const [cover] = spindle.gallery
@@ -50,6 +51,9 @@ function Spindle() {
         ))}
       </div>
 
+      <h3 className="sub-head">On-ground testing at the mine</h3>
+      <Gallery photos={spindle.fieldTests} />
+
       <h3 className="sub-head">Build gallery</h3>
       <Gallery photos={spindle.gallery} />
 
@@ -79,10 +83,18 @@ export default function Projects() {
           <div className="projects">
             {projects.map((p) => (
               <article key={p.title} className="project">
-                <Media src={p.image} alt={p.title} label="Project image" />
+                {p.document && p.image ? (
+                  <a href={p.document.href} className="project__doc" target="_blank" rel="noreferrer">
+                    <img src={p.image} alt={p.document.label} loading="lazy" />
+                    <span>View letter <ArrowUpRight width={14} height={14} /></span>
+                  </a>
+                ) : (
+                  <Media src={p.image} alt={p.title} label="Project image" />
+                )}
                 <span className="project__date">{p.date}</span>
                 <h3>{p.title}</h3>
                 <p>{p.description}</p>
+                {p.document && <ExternalLinks links={[p.document]} />}
                 <div className="pills">
                   {p.tags.map((t) => <span key={t} className="pill">{t}</span>)}
                 </div>
